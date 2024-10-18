@@ -1,10 +1,6 @@
 <template>
     <div class="item">
-        <input
-            type="checkbox"
-            @change="updateCheck()"
-            v-model="item.completed"
-        />
+        <input type="checkbox" @change="updateCheck" v-model="item.completed" />
         <span :class="[item.completed ? 'completed' : '', 'itemText']">{{
             item.name
         }}</span>
@@ -23,6 +19,18 @@
                     .put("api/item/" + this.item.id, {
                         item: this.item,
                     })
+                    .then(res => {
+                        if (res.status === 200) {
+                            this.$emit("itemchanged");
+                        }
+                    })
+                    .catch(err => {
+                        console.error("API request error:", err);
+                    });
+            },
+            removeItem() {
+                axios
+                    .delete("api/item/" + this.item.id)
                     .then(res => {
                         if (res.status === 200) {
                             this.$emit("itemchanged");
