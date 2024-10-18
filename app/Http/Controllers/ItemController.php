@@ -26,6 +26,12 @@ class ItemController extends Controller
             'item.name' => 'required|string|max:255',
         ]);
 
+        $existingItem = Item::where('name', $request->item['name'])->first();
+
+        if ($existingItem) {
+            return response()->json(['message' => 'Item with this name already exists'], Response::HTTP_CONFLICT);
+        }
+
         $newItem = new Item;
         $newItem->name = $request->item['name'];
         $newItem->save();
