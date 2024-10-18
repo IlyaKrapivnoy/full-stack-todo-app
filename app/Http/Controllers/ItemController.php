@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use Illuminate\Support\Carbon;
+use Illuminate\Http\Response;
 
 class ItemController extends Controller
 {
@@ -13,15 +14,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return Item::orderBy('created_at', 'DESC')->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json(Item::orderBy('created_at', 'DESC')->get(), Response::HTTP_OK);
     }
 
     /**
@@ -29,27 +22,15 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'item.name' => 'required|string|max:255',
+        ]);
+
         $newItem = new Item;
         $newItem->name = $request->item['name'];
         $newItem->save();
 
-        return $newItem;
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return response()->json($newItem, Response::HTTP_CREATED);
     }
 
     /**
@@ -57,15 +38,21 @@ class ItemController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'item.completed' => 'required|boolean',
+        ]);
+
         $existingItem = Item::find($id);
-        if($existingItem) {
-            $existingItem->completed = $request->item['completed'] ? true : false;
-            $existingItem->completed_at = $request->item['completed'] ? Carbon::now() : null;
-            $existingItem->save();
-            return $existingItem;
+
+        if (!$existingItem) {
+            return response()->json(['message' => 'Item not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return "Not item found";
+        $existingItem->completed = $request->item['completed'];
+        $existingItem->completed_at = $request->item['completed'] ? Carbon::now() : null;
+        $existingItem->save();
+
+        return response()->json($existingItem, Response::HTTP_OK);
     }
 
     /**
@@ -74,10 +61,13 @@ class ItemController extends Controller
     public function destroy(string $id)
     {
         $existingItem = Item::find($id);
-        if($existingItem) {
-            $existingItem->delete();
-            return "Item successfully deleted";
+
+        if (!$existingItem) {
+            return response()->json(['message' => 'Item not found'], Response::HTTP_NOT_FOUND);
         }
-        return "Item not found";
+
+        $existingItem->delete();
+
+        return response()->json(['message' => 'Item successfully deleted'], Response::HTTP_OK);
     }
 }
