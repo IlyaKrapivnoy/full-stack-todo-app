@@ -53,20 +53,28 @@
 </script>
 
 <style scoped>
-    .completed {
-        text-decoration: line-through;
-        color: #999;
+    .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    input {
+        flex-shrink: 0;
     }
 
     .itemText {
         width: 100%;
         margin-left: 20px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .completed {
+        text-decoration: line-through;
+        color: #999;
     }
 
     .trashcan {
@@ -74,5 +82,6 @@
         border: none;
         color: #ff0000;
         outline: none;
+        margin-left: 10px;
     }
 </style>
