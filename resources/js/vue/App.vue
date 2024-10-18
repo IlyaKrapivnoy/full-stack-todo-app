@@ -4,7 +4,6 @@
             <h2 id="title">Todo List</h2>
             <add-item-from @reloadlist="getList" />
         </div>
-
         <list-view :items="items" @reloadlist="getList" />
     </div>
 </template>
@@ -12,6 +11,7 @@
 <script>
     import addItemFrom from "./AddItemFrom.vue";
     import listView from "./ListView.vue";
+    import axios from "axios";
 
     export default {
         name: "App",
@@ -19,7 +19,7 @@
             addItemFrom,
             listView,
         },
-        data: function () {
+        data() {
             return {
                 items: [],
             };
@@ -29,7 +29,9 @@
                 axios
                     .get("/api/items")
                     .then(response => {
-                        this.items = response.data;
+                        this.items = response.data.sort(
+                            (a, b) => a.completed - b.completed,
+                        );
                     })
                     .catch(err => {
                         console.error("API request error:", err);

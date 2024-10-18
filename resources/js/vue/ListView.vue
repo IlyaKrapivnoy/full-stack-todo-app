@@ -4,7 +4,7 @@
             <list-item
                 :item="item"
                 class="item"
-                @itemchanged="$emit('reloadlist')"
+                @itemchanged="handleItemChanged"
             />
         </div>
     </div>
@@ -12,10 +12,16 @@
 
 <script>
     import ListItem from "./ListItem.vue";
+
     export default {
         props: ["items"],
         components: {
             ListItem,
+        },
+        methods: {
+            handleItemChanged() {
+                this.$emit("reloadlist");
+            },
         },
     };
 </script>

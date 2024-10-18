@@ -1,23 +1,31 @@
 <template>
     <div class="item">
-        <input type="checkbox" @change="updateCheck" v-model="item.completed" />
+        <input
+            type="checkbox"
+            @change="updateCheck"
+            :checked="item.completed"
+        />
         <span :class="[item.completed ? 'completed' : '', 'itemText']">{{
             item.name
         }}</span>
-        <button @click="removeItem()" class="trashcan">
+        <button @click="removeItem" class="trashcan">
             <font-awesome-icon icon="trash" />
         </button>
     </div>
 </template>
 
 <script>
+    import axios from "axios";
+
     export default {
         props: ["item"],
         methods: {
             updateCheck() {
+                const updatedStatus = !this.item.completed;
+                this.item.completed = updatedStatus;
                 axios
-                    .put("api/item/" + this.item.id, {
-                        item: this.item,
+                    .put(`/api/item/${this.item.id}`, {
+                        item: { completed: updatedStatus },
                     })
                     .then(res => {
                         if (res.status === 200) {
@@ -30,7 +38,7 @@
             },
             removeItem() {
                 axios
-                    .delete("api/item/" + this.item.id)
+                    .delete(`/api/item/${this.item.id}`)
                     .then(res => {
                         if (res.status === 200) {
                             this.$emit("itemchanged");
