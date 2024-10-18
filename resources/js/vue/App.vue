@@ -5,7 +5,7 @@
             <add-item-from />
         </div>
 
-        <list-view />
+        <list-view :items="items" />
     </div>
 </template>
 
@@ -18,6 +18,26 @@
         components: {
             addItemFrom,
             listView,
+        },
+        data: function () {
+            return {
+                items: [],
+            };
+        },
+        methods: {
+            getList() {
+                axios
+                    .get("/api/items")
+                    .then(response => {
+                        this.items = response.data;
+                    })
+                    .catch(err => {
+                        console.error("API request error:", err);
+                    });
+            },
+        },
+        created() {
+            this.getList();
         },
     };
 </script>
