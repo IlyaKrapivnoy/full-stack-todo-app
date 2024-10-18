@@ -1,11 +1,61 @@
 <template>
     <div class="todoListContainer">
-        Hello World!
+        <div class="heading">
+            <h2 id="title">Todo List</h2>
+            <add-item-from @reloadlist="getList" />
+        </div>
+        <list-view :items="items" @reloadlist="getList" />
     </div>
 </template>
 
 <script>
-export default {
-    name: 'App'
-}
+    import addItemFrom from "./AddItemFrom.vue";
+    import listView from "./ListView.vue";
+    import axios from "axios";
+
+    export default {
+        name: "App",
+        components: {
+            addItemFrom,
+            listView,
+        },
+        data() {
+            return {
+                items: [],
+            };
+        },
+        methods: {
+            getList() {
+                axios
+                    .get("/api/items")
+                    .then(response => {
+                        this.items = response.data.sort(
+                            (a, b) => a.completed - b.completed,
+                        );
+                    })
+                    .catch(err => {
+                        console.error("API request error:", err);
+                    });
+            },
+        },
+        created() {
+            this.getList();
+        },
+    };
 </script>
+
+<style scoped>
+    .todoListContainer {
+        width: 350px;
+        margin: auto;
+    }
+
+    .heading {
+        background-color: #e6e6e6;
+        padding: 10px;
+    }
+
+    #title {
+        text-align: center;
+    }
+</style>
