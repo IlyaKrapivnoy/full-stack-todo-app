@@ -5,7 +5,7 @@
             <add-item-from />
         </div>
 
-        <list-view :items="items" />
+        <list-view :items="items" v-on:reloadlist="getlist()" />
     </div>
 </template>
 
