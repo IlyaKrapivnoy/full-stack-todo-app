@@ -1,12 +1,13 @@
 <template>
-    <div class="addItem">
+    <form class="addItem" @submit.prevent="addItem">
         <input type="text" v-model="item.name" />
-        <font-awesome-icon
-            :icon="['fas', 'plus-square']"
-            @click="addItem"
+        <button
             :class="[item.name ? 'active' : 'inactive', 'plus']"
-        />
-    </div>
+            type="submit"
+        >
+            <font-awesome-icon :icon="['fas', 'plus-square']" />
+        </button>
+    </form>
 </template>
 
 <script>
