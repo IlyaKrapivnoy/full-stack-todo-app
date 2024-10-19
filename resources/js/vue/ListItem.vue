@@ -5,9 +5,12 @@
             @change="updateCheck"
             :checked="item.completed"
         />
-        <span :class="[item.completed ? 'completed' : '', 'itemText']">{{
-            item.name
-        }}</span>
+        <div class="flex flex-col">
+            <span :class="[item.completed ? 'completed' : '', 'itemText']">{{
+                item.name
+            }}</span>
+            <span>{{ item.created_at_formatted }}</span>
+        </div>
         <button @click="removeItem" class="trashcan">
             <font-awesome-icon icon="trash" />
         </button>

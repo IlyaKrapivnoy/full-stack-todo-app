@@ -14,8 +14,16 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return response()->json(Item::orderBy('created_at', 'DESC')->get(), Response::HTTP_OK);
+        $items = Item::orderBy('created_at', 'DESC')->get()->map(function ($item) {
+            $itemArray = $item->toArray();
+            $itemArray['created_at_formatted'] = Carbon::parse($item->created_at)->format('d M, H:i');
+            $itemArray['updated_at_formatted'] = Carbon::parse($item->updated_at)->format('d M, H:i');
+            return $itemArray;
+        });
+
+        return response()->json($items, Response::HTTP_OK);
     }
+
 
     /**
      * Store a newly created resource in storage.
