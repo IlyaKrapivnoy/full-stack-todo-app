@@ -29,12 +29,12 @@
             >
                 {{ item.name }}
             </span>
-            <p class="text-gray-500 text-[12px]">
+            <p v-if="showDates" class="text-gray-500 text-[12px]">
                 Created: {{ item.created_at_formatted }}
             </p>
             <p
+                v-if="showDates && item.updated_at_formatted"
                 class="text-gray-500 text-[12px]"
-                v-if="item.updated_at_formatted"
             >
                 Updated: {{ item.updated_at_formatted }}
             </p>
@@ -53,7 +53,7 @@
     import _ from "lodash";
 
     export default {
-        props: ["item"],
+        props: ["item", "showDates"],
         methods: {
             updateCheck: _.debounce(function () {
                 const updatedStatus = !this.item.completed;
