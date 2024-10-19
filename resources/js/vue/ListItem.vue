@@ -1,14 +1,48 @@
 <template>
-    <div class="item">
-        <input
-            type="checkbox"
-            @change="updateCheck"
-            :checked="item.completed"
-        />
-        <span :class="[item.completed ? 'completed' : '', 'itemText']">{{
-            item.name
-        }}</span>
-        <button @click="removeItem" class="trashcan">
+    <div
+        @click="toggleCheck"
+        class="flex justify-center items-center w-full rounded-lg border border-gray-600 px-4 cursor-pointer"
+    >
+        <div
+            class="flex-shrink-0 custom-checkbox-container cursor-pointer relative"
+            @click.stop
+        >
+            <input
+                type="checkbox"
+                @change="updateCheck"
+                :checked="item.completed"
+                class="absolute opacity-0 cursor-pointer h-full w-full"
+            />
+            <div
+                :class="[
+                    'custom-checkbox',
+                    item.completed ? 'bg-[#85474B]' : 'bg-[#404348]',
+                ]"
+            ></div>
+        </div>
+        <div class="flex flex-col ml-5 w-full overflow-hidden">
+            <span
+                :class="[
+                    item.completed ? 'line-through text-gray-500' : '',
+                    'text-xl truncate',
+                ]"
+            >
+                {{ item.name }}
+            </span>
+            <p v-if="showDates" class="text-gray-500 text-[12px]">
+                Created: {{ item.created_at_formatted }}
+            </p>
+            <p
+                v-if="showDates && item.updated_at_formatted"
+                class="text-gray-500 text-[12px]"
+            >
+                Updated: {{ item.updated_at_formatted }}
+            </p>
+        </div>
+        <button
+            @click.stop="removeItem"
+            class="bg-transparent border-none text-[#85474B] outline-none ml-2"
+        >
             <font-awesome-icon icon="trash" />
         </button>
     </div>
@@ -16,11 +50,12 @@
 
 <script>
     import axios from "axios";
+    import _ from "lodash";
 
     export default {
-        props: ["item"],
+        props: ["item", "showDates"],
         methods: {
-            updateCheck() {
+            updateCheck: _.debounce(function () {
                 const updatedStatus = !this.item.completed;
                 this.item.completed = updatedStatus;
                 axios
@@ -30,11 +65,16 @@
                     .then(res => {
                         if (res.status === 200) {
                             this.$emit("itemchanged");
+                        } else {
+                            console.error("Update failed:", res);
                         }
                     })
                     .catch(err => {
                         console.error("API request error:", err);
                     });
+            }, 300),
+            toggleCheck() {
+                this.updateCheck();
             },
             removeItem() {
                 axios
@@ -42,6 +82,8 @@
                     .then(res => {
                         if (res.status === 200) {
                             this.$emit("itemchanged");
+                        } else {
+                            console.error("Delete failed:", res);
                         }
                     })
                     .catch(err => {
@@ -53,35 +95,17 @@
 </script>
 
 <style scoped>
-    .item {
+    .custom-checkbox-container {
+        width: 15px;
+        height: 15px;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .custom-checkbox {
         width: 100%;
-    }
-
-    input {
-        flex-shrink: 0;
-    }
-
-    .itemText {
-        width: 100%;
-        margin-left: 20px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .completed {
-        text-decoration: line-through;
-        color: #999;
-    }
-
-    .trashcan {
-        background-color: #e6e6e6;
-        border: none;
-        color: #ff0000;
-        outline: none;
-        margin-left: 10px;
+        height: 100%;
+        border-radius: 3px;
     }
 </style>

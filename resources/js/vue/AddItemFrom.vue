@@ -1,15 +1,27 @@
 <template>
     <form @submit.prevent="addItem">
-        <div class="addItem">
-            <input type="text" v-model="item.name" />
+        <div class="flex justify-center items-center">
+            <input
+                type="text"
+                v-model="item.name"
+                class="bg-[#202124] border-none outline-none px-2 mr-3 w-full rounded text-white"
+            />
             <button
-                :class="[item.name ? 'active' : 'inactive', 'plus']"
+                :class="[
+                    item.name
+                        ? 'text-[#85d66b]'
+                        : 'text-gray-400 cursor-not-allowed',
+                    'bg-transparent border-none p-0 m-0 text-xl opacity-70',
+                ]"
                 type="submit"
+                :disabled="!item.name"
             >
                 <font-awesome-icon :icon="['fas', 'plus-square']" />
             </button>
         </div>
-        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        <p v-if="errorMessage" class="text-red-600 ml-3 text-sm">
+            {{ errorMessage }}
+        </p>
     </form>
 </template>
 
@@ -55,47 +67,3 @@
         },
     };
 </script>
-
-<style scoped>
-    .addItem {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    input {
-        background-color: #f7f7f7;
-        border: none;
-        outline: none;
-        padding: 5px;
-        margin-right: 10px;
-        width: 100%;
-    }
-
-    button {
-        background: none;
-        border: none;
-        padding: 0;
-        margin: 0;
-        cursor: pointer;
-    }
-
-    .plus {
-        font-size: 20px;
-    }
-
-    .active {
-        color: #489c56;
-    }
-
-    .inactive {
-        color: #999;
-        cursor: not-allowed;
-    }
-
-    .error {
-        color: red;
-        margin-left: 10px;
-        font-size: 14px;
-    }
-</style>
