@@ -1,7 +1,9 @@
 <template>
-    <div class="todoListContainer">
-        <div class="heading">
-            <h2 id="title">Todo List</h2>
+    <div class="todoListContainer w-[350px] mx-auto rounded-xl">
+        <div class="heading bg-[#2F3137] p-2.5">
+            <h2 class="text-center text-3xl text-white font-black">
+                Todo List
+            </h2>
             <add-item-from @reloadlist="getList" />
         </div>
         <list-view :items="items" @reloadlist="getList" />
@@ -43,19 +45,3 @@
         },
     };
 </script>
-
-<style scoped>
-    .todoListContainer {
-        width: 350px;
-        margin: auto;
-    }
-
-    .heading {
-        background-color: #e6e6e6;
-        padding: 10px;
-    }
-
-    #title {
-        text-align: center;
-    }
-</style>

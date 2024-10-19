@@ -19,7 +19,7 @@
             </style>
         @endif
     </head>
-    <body>
-    <div id="app"></div>
+    <body class="bg-custom-bg">
+        <div id="app"></div>
     </body>
 </html>

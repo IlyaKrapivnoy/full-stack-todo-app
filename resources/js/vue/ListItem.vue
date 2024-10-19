@@ -1,5 +1,7 @@
 <template>
-    <div class="flex justify-center items-center w-full">
+    <div
+        class="flex justify-center items-center w-full rounded-lg border border-gray-300 p-4"
+    >
         <input
             type="checkbox"
             @change="updateCheck"
@@ -10,18 +12,23 @@
             <span
                 :class="[
                     item.completed ? 'line-through text-gray-500' : '',
-                    'truncate',
+                    'text-xl truncate',
                 ]"
                 >{{ item.name }}</span
             >
-            <span>Created: {{ item.created_at_formatted }}</span>
-            <span v-if="item.updated_at_formatted"
-                >Updated: {{ item.updated_at_formatted }}</span
+            <p class="text-gray-500 text-[12px]">
+                Created: {{ item.created_at_formatted }}
+            </p>
+            <p
+                class="text-gray-500 text-[12px]"
+                v-if="item.updated_at_formatted"
             >
+                Updated: {{ item.updated_at_formatted }}
+            </p>
         </div>
         <button
             @click="removeItem"
-            class="bg-gray-200 border-none text-red-600 outline-none ml-2"
+            class="bg-transparent border-none text-red-600 outline-none ml-2"
         >
             <font-awesome-icon icon="trash" />
         </button>
