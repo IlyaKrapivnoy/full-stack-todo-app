@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-end text-gray-600 mt-2">
+    <div class="flex justify-end text-gray-400 mt-2">
         You have {{ todoCounterMessage }}
     </div>
 </template>
