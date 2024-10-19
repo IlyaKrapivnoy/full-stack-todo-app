@@ -3,13 +3,23 @@
         @click="toggleCheck"
         class="flex justify-center items-center w-full rounded-lg border border-gray-600 px-4 cursor-pointer"
     >
-        <input
-            type="checkbox"
-            @change="updateCheck"
-            :checked="item.completed"
-            class="flex-shrink-0"
+        <div
+            class="flex-shrink-0 custom-checkbox-container cursor-pointer relative"
             @click.stop
-        />
+        >
+            <input
+                type="checkbox"
+                @change="updateCheck"
+                :checked="item.completed"
+                class="absolute opacity-0 cursor-pointer h-full w-full"
+            />
+            <div
+                :class="[
+                    'custom-checkbox',
+                    item.completed ? 'bg-[#85474B]' : 'bg-[#404348]',
+                ]"
+            ></div>
+        </div>
         <div class="flex flex-col ml-5 w-full overflow-hidden">
             <span
                 :class="[
@@ -83,3 +93,19 @@
         },
     };
 </script>
+
+<style scoped>
+    .custom-checkbox-container {
+        width: 15px;
+        height: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .custom-checkbox {
+        width: 100%;
+        height: 100%;
+        border-radius: 3px;
+    }
+</style>
