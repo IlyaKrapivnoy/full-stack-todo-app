@@ -1,17 +1,28 @@
 <template>
-    <div class="item">
+    <div class="flex justify-center items-center w-full">
         <input
             type="checkbox"
             @change="updateCheck"
             :checked="item.completed"
+            class="flex-shrink-0"
         />
-        <div class="flex flex-col">
-            <span :class="[item.completed ? 'completed' : '', 'itemText']">{{
-                item.name
-            }}</span>
-            <span>{{ item.created_at_formatted }}</span>
+        <div class="flex flex-col ml-5 w-full overflow-hidden">
+            <span
+                :class="[
+                    item.completed ? 'line-through text-gray-500' : '',
+                    'truncate',
+                ]"
+                >{{ item.name }}</span
+            >
+            <span>Created: {{ item.created_at_formatted }}</span>
+            <span v-if="item.updated_at_formatted"
+                >Updated: {{ item.updated_at_formatted }}</span
+            >
         </div>
-        <button @click="removeItem" class="trashcan">
+        <button
+            @click="removeItem"
+            class="bg-gray-200 border-none text-red-600 outline-none ml-2"
+        >
             <font-awesome-icon icon="trash" />
         </button>
     </div>
@@ -19,11 +30,12 @@
 
 <script>
     import axios from "axios";
+    import _ from "lodash";
 
     export default {
         props: ["item"],
         methods: {
-            updateCheck() {
+            updateCheck: _.debounce(function () {
                 const updatedStatus = !this.item.completed;
                 this.item.completed = updatedStatus;
                 axios
@@ -33,18 +45,22 @@
                     .then(res => {
                         if (res.status === 200) {
                             this.$emit("itemchanged");
+                        } else {
+                            console.error("Update failed:", res);
                         }
                     })
                     .catch(err => {
                         console.error("API request error:", err);
                     });
-            },
+            }, 300),
             removeItem() {
                 axios
                     .delete(`/api/item/${this.item.id}`)
                     .then(res => {
                         if (res.status === 200) {
                             this.$emit("itemchanged");
+                        } else {
+                            console.error("Delete failed:", res);
                         }
                     })
                     .catch(err => {
@@ -54,37 +70,3 @@
         },
     };
 </script>
-
-<style scoped>
-    .item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
-
-    input {
-        flex-shrink: 0;
-    }
-
-    .itemText {
-        width: 100%;
-        margin-left: 20px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .completed {
-        text-decoration: line-through;
-        color: #999;
-    }
-
-    .trashcan {
-        background-color: #e6e6e6;
-        border: none;
-        color: #ff0000;
-        outline: none;
-        margin-left: 10px;
-    }
-</style>
