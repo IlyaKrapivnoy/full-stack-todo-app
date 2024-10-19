@@ -8,17 +8,26 @@
                 class="bg-[#2F3137] text-white p-1.5 mt-1.5"
             />
         </div>
-        <div v-if="filteredItems.length" class="flex justify-between">
+        <div v-if="items.length" class="flex justify-between">
             <button
                 @click="toggleShowCompleted"
+                :disabled="!hasCompletedTasks && !showCompleted"
                 class="btn btn-secondary text-gray-400 mt-3"
+                :class="{
+                    'opacity-50 cursor-not-allowed':
+                        !hasCompletedTasks && !showCompleted,
+                }"
             >
                 {{ showCompleted ? "Hide Completed" : "Show Completed" }} -
                 {{ completedCount }}
             </button>
             <button
                 @click="toggleShowSmallBig"
+                :disabled="!filteredItems.length"
                 class="btn btn-secondary text-gray-400 mt-3 ms-2"
+                :class="{
+                    'opacity-50 cursor-not-allowed': !filteredItems.length,
+                }"
             >
                 {{ showSmall ? "Detailed View" : "Simple View" }}
             </button>
@@ -45,6 +54,9 @@
             },
             completedCount() {
                 return this.items.filter(item => item.completed).length;
+            },
+            hasCompletedTasks() {
+                return this.completedCount > 0;
             },
         },
         components: {
