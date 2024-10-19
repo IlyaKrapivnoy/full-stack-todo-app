@@ -1,9 +1,7 @@
 <template>
     <div class="todoListContainer w-[350px] mx-auto rounded-xl">
         <div class="heading bg-[#2F3137] p-2.5">
-            <h2 class="text-center text-3xl text-white font-black">
-                Todo List
-            </h2>
+            <h2 class="text-center text-3xl text-white">Todo List</h2>
             <add-item-from @reloadlist="getList" />
         </div>
         <counter-view :items="items" />

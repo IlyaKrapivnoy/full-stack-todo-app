@@ -12,7 +12,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                sans: ["Afacad Flux", ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 "custom-bg": "#1c1d22",
