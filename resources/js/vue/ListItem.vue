@@ -1,7 +1,7 @@
 <template>
     <div
         @click="toggleCheck"
-        class="flex justify-center items-center w-full rounded-lg border border-gray-600 p-4 cursor-pointer"
+        class="flex justify-center items-center w-full rounded-lg border border-gray-600 px-4 cursor-pointer"
     >
         <input
             type="checkbox"
@@ -31,7 +31,7 @@
         </div>
         <button
             @click.stop="removeItem"
-            class="bg-transparent border-none text-red-600 outline-none ml-2"
+            class="bg-transparent border-none text-[#85474B] outline-none ml-2"
         >
             <font-awesome-icon icon="trash" />
         </button>

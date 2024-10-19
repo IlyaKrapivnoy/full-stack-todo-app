@@ -4,14 +4,14 @@
             <input
                 type="text"
                 v-model="item.name"
-                class="bg-gray-100 border-none outline-none p-2 mr-3 w-full"
+                class="bg-[#202124] border-none outline-none px-2 mr-3 w-full rounded text-white"
             />
             <button
                 :class="[
                     item.name
-                        ? 'text-green-600'
+                        ? 'text-[#85d66b]'
                         : 'text-gray-400 cursor-not-allowed',
-                    'bg-transparent border-none p-0 m-0 text-xl',
+                    'bg-transparent border-none p-0 m-0 text-xl opacity-70',
                 ]"
                 type="submit"
                 :disabled="!item.name"
