@@ -6,20 +6,23 @@
             </h2>
             <add-item-from @reloadlist="getList" />
         </div>
+        <counter-view :items="items" />
         <list-view :items="items" @reloadlist="getList" />
     </div>
 </template>
 
 <script>
-    import addItemFrom from "./AddItemFrom.vue";
-    import listView from "./ListView.vue";
+    import AddItemFrom from "./AddItemFrom.vue";
+    import ListView from "./ListView.vue";
     import axios from "axios";
+    import CounterView from "./CounterView.vue";
 
     export default {
         name: "App",
         components: {
-            addItemFrom,
-            listView,
+            CounterView,
+            AddItemFrom,
+            ListView,
         },
         data() {
             return {
