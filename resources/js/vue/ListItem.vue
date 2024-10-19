@@ -1,12 +1,14 @@
 <template>
     <div
-        class="flex justify-center items-center w-full rounded-lg border border-gray-300 p-4"
+        @click="toggleCheck"
+        class="flex justify-center items-center w-full rounded-lg border border-gray-600 p-4 cursor-pointer"
     >
         <input
             type="checkbox"
             @change="updateCheck"
             :checked="item.completed"
             class="flex-shrink-0"
+            @click.stop
         />
         <div class="flex flex-col ml-5 w-full overflow-hidden">
             <span
@@ -14,8 +16,9 @@
                     item.completed ? 'line-through text-gray-500' : '',
                     'text-xl truncate',
                 ]"
-                >{{ item.name }}</span
             >
+                {{ item.name }}
+            </span>
             <p class="text-gray-500 text-[12px]">
                 Created: {{ item.created_at_formatted }}
             </p>
@@ -27,7 +30,7 @@
             </p>
         </div>
         <button
-            @click="removeItem"
+            @click.stop="removeItem"
             class="bg-transparent border-none text-red-600 outline-none ml-2"
         >
             <font-awesome-icon icon="trash" />
@@ -60,6 +63,9 @@
                         console.error("API request error:", err);
                     });
             }, 300),
+            toggleCheck() {
+                this.updateCheck();
+            },
             removeItem() {
                 axios
                     .delete(`/api/item/${this.item.id}`)
